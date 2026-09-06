@@ -57,7 +57,6 @@ def test_add_task_after_delete(tasks):
 
 
 
-
 def test_add_task_empty_list():
     tasks =[]
     result = add_task(tasks, "Learn Python")
@@ -66,12 +65,26 @@ def test_add_task_empty_list():
     assert result["title"] == "Learn Python"
     assert result["completed"] is False
 
+
 # Testing  exception handling with pytest.raises
 def test_add_task_empty_title(tasks):
     with pytest.raises(ValueError) as exc_info:
         add_task(tasks, "")
 
     assert str(exc_info.value) == "Title cannot be empty"
+
+
+def test_add_task_title_strip(tasks):
+    result = add_task(tasks, " Learn Python ")
+
+    assert result["title"] == "Learn Python"
+
+
+def test_task_title_white_space_validation(tasks):
+    with pytest.raises(ValueError) as exc_info:
+        add_task(tasks, " ")
+    assert str(exc_info.value) == "Title cannot be empty"
+
 
 
 
@@ -96,6 +109,6 @@ def test_delete_task(tasks):
 
     assert result == "deleted"
     assert get_task(tasks, 2) is None
-    result =  delete_task(tasks, 99) 
+    result = delete_task(tasks, 99) 
     assert result == "not found"
 
