@@ -125,3 +125,7 @@ def test_delete_task(tasks):
     result = delete_task(tasks, 99) 
     assert result == "not found"
 
+def test_delete_task_id_type_validation():
+    with pytest.raises(TypeError) as exc_info:
+        delete_task(tasks, "1")
+    assert str(exc_info.value) == "Task ID must be an integer"
