@@ -20,7 +20,6 @@ def test_complete_task(tasks):
     # assert tasks[1]["completed"] is True
 
 
-
 def test_task_already_completed(tasks):
     complete_task(tasks, 2)
     result = complete_task(tasks, 2)
@@ -31,7 +30,13 @@ def test_task_not_found(tasks):
     result = complete_task(tasks, 99)
 
     assert result == "not found"
-    
+
+
+def test_complete_task_id_type_validation(tasks):
+    with pytest.raises(TypeError) as exc_info:
+        complete_task(tasks, "2")
+    assert str(exc_info.value) == "Task ID must be an integer"
+
 # ============================== ADD TASK ====================================
 
 def test_add_task(tasks):
@@ -103,6 +108,11 @@ def test_get_task_not_found(tasks):
     result = get_task(tasks, 99)
 
     assert result is None
+
+def test_get_task_id_type_validation(tasks):
+    with pytest.raises(TypeError) as exc_info:
+        get_task(tasks, "2")
+    assert str(exc_info.value) == "Task_id must be an Integer"
 
 
 # ============================== DELETE TASK ====================================

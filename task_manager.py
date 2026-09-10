@@ -26,6 +26,8 @@ def add_task(tasks, title):
     
 
 def get_task(tasks, task_id):
+    if not isinstance(task_id, int):
+        raise TypeError("Task_id must be an Integer")
     for task in tasks:
         if task["id"] == task_id:
             return task
@@ -33,7 +35,12 @@ def get_task(tasks, task_id):
     return None
 
 
+
+
+
 def complete_task(tasks, task_id):
+    if not isinstance(task_id, int):
+        raise TypeError("Task ID must be an integer")
     for task in tasks:
         if task_id == task["id"] and task["completed"]:
             return "already completed"
