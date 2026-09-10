@@ -86,7 +86,10 @@ def test_task_title_white_space_validation(tasks):
     assert str(exc_info.value) == "Title cannot be empty"
 
 
-
+def test_add_task_interger(tasks):
+    with pytest.raises(TypeError) as exc_info:
+        add_task(tasks, 123)
+    assert str(exc_info.value) == "String type expected"
 
 # ============================== GET/READ TASK ====================================
 

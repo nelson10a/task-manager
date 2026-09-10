@@ -10,6 +10,8 @@ tasks = [
 
 
 def add_task(tasks, title):
+    if not isinstance(title, str):
+        raise TypeError("String type expected")
     title = title.strip()
     if title == "":
         raise ValueError("Title cannot be empty")
