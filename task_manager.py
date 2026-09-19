@@ -26,8 +26,9 @@ def add_task(tasks, title):
     
 
 def get_task(tasks, task_id):
-    if not isinstance(task_id, int):
-        raise TypeError("Task_id must be an Integer")
+    #type(int) returns a bool True/False
+    if type(task_id) != int:
+        raise TypeError("Task ID must be an integer")
     for task in tasks:
         if task["id"] == task_id:
             return task
@@ -36,10 +37,8 @@ def get_task(tasks, task_id):
 
 
 
-
-
 def complete_task(tasks, task_id):
-    if not isinstance(task_id, int):
+    if type(task_id) != int:
         raise TypeError("Task ID must be an integer")
     for task in tasks:
         if task_id == task["id"] and task["completed"]:
@@ -53,7 +52,7 @@ def complete_task(tasks, task_id):
 
 
 def delete_task(tasks, task_id):
-    if not isinstance(task_id, int):
+    if type(task_id) != int:
         raise TypeError("Task ID must be an integer")
     for task in tasks:
         if task["id"] == task_id:
@@ -64,3 +63,22 @@ def delete_task(tasks, task_id):
 
 
 # add_task(tasks, "Learn FASTAPI")
+
+def add_task_cli(tasks, title):
+    title = input("Enter task tittle: ")
+    
+    
+    def add_task(tasks, title):
+        if not isinstance(title, str):
+            raise TypeError("Title must be a string")
+        title = title.strip()
+        if title == "":
+            raise ValueError("Title cannot be empty")
+        
+        if not tasks:
+            task_id = 1
+        else:
+            task_id = max(task["id"] for task in tasks) + 1
+        task = {"id": task_id, "title": title, "completed": False}
+        tasks.append(task)
+        return task

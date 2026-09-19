@@ -1,4 +1,5 @@
 from task_manager import complete_task, add_task, get_task, delete_task
+from cli import add_task_cli
 import pytest
 
 
@@ -112,8 +113,13 @@ def test_get_task_not_found(tasks):
 def test_get_task_id_type_validation(tasks):
     with pytest.raises(TypeError) as exc_info:
         get_task(tasks, "2")
-    assert str(exc_info.value) == "Task_id must be an Integer"
+    assert str(exc_info.value) == "Task ID must be an integer"
 
+
+def test_get_task_bool_validation(tasks):
+    with pytest.raises(TypeError) as exc_info:
+        get_task(tasks, True)
+    assert str(exc_info.value) == "Task ID must be an integer"
 
 # ============================== DELETE TASK ====================================
 
@@ -129,3 +135,12 @@ def test_delete_task_id_type_validation():
     with pytest.raises(TypeError) as exc_info:
         delete_task(tasks, "1")
     assert str(exc_info.value) == "Task ID must be an integer"
+
+
+
+#=====================TEST FOR CLI==========================================
+
+def test_add_task_cli(tasks, monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: "Learn Docker")
+    result = add_task_cli(tasks)
+    assert result["title"] == "Learn Docker"
