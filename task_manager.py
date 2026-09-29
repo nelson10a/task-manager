@@ -63,22 +63,3 @@ def delete_task(tasks, task_id):
 
 
 # add_task(tasks, "Learn FASTAPI")
-
-def add_task_cli(tasks, title):
-    title = input("Enter task tittle: ")
-    
-    
-    def add_task(tasks, title):
-        if not isinstance(title, str):
-            raise TypeError("Title must be a string")
-        title = title.strip()
-        if title == "":
-            raise ValueError("Title cannot be empty")
-        
-        if not tasks:
-            task_id = 1
-        else:
-            task_id = max(task["id"] for task in tasks) + 1
-        task = {"id": task_id, "title": title, "completed": False}
-        tasks.append(task)
-        return task

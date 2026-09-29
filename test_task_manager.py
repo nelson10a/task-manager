@@ -1,5 +1,5 @@
 from task_manager import complete_task, add_task, get_task, delete_task
-from cli import add_task_cli
+from cli import add_task_cli, list_tasks_cli, complete_task_cli, delete_task_cli
 import pytest
 
 
@@ -144,3 +144,61 @@ def test_add_task_cli(tasks, monkeypatch):
     monkeypatch.setattr("builtins.input", lambda _: "Learn Docker")
     result = add_task_cli(tasks)
     assert result["title"] == "Learn Docker"
+
+
+def test_list_tasks_cli(tasks, capsys):
+    list_tasks_cli(tasks)
+
+    captured = capsys.readouterr()
+    assert "Learn Python" in captured.out
+    assert "Learn SQL" in captured.out
+    assert "Build API" in captured.out
+
+
+
+def test_list_tasks_not_completed(tasks, capsys):
+    list_tasks_cli(tasks)
+
+    captured = capsys.readouterr()
+    assert "completed" in captured.out
+    assert "completed" in captured.out
+    assert "completed" in captured.out
+
+
+ # Always remember, your test name always reminds you what you are testing for,
+ # and what it should return or assert 
+def test_complete_task_cli(tasks, monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: 2)
+    result = complete_task_cli(tasks)
+    assert result == "completed"
+    assert tasks[1]["completed"] is True
+
+
+def test_complete_task_not_int_validation(tasks, monkeypatch, capsys):
+    monkeypatch.setattr("builtins.input", lambda _: "abc")
+    complete_task_cli(tasks)
+    captured = capsys.readouterr()
+    assert "Task ID must be an integer" in captured.out
+
+
+
+def test_delete_task_cli(tasks, monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: "2")
+    result = delete_task_cli(tasks)
+    assert result == "deleted"
+    assert get_task(tasks, 2) is None
+
+
+def test_delete_task_cli_not_found(tasks, monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: "99")
+    result = delete_task_cli(tasks)
+    assert result == "not found"
+    assert len(tasks) == 3
+
+
+def test_delete_task_cli_invalid_input(tasks, monkeypatch, capsys):
+    monkeypatch.setattr("builtins.input", lambda _: "abc")
+    delete_task_cli(tasks)
+    captured = capsys.readouterr()
+    assert "Task ID must be an integer" in captured.out
+    assert len(tasks) == 3
