@@ -1,5 +1,5 @@
 from task_manager import complete_task, add_task, get_task, delete_task
-from cli import add_task_cli, list_tasks_cli, complete_task_cli, delete_task_cli
+from cli import add_task_cli, list_tasks_cli, complete_task_cli, delete_task_cli, main
 import pytest
 
 
@@ -202,3 +202,24 @@ def test_delete_task_cli_invalid_input(tasks, monkeypatch, capsys):
     captured = capsys.readouterr()
     assert "Task ID must be an integer" in captured.out
     assert len(tasks) == 3
+
+
+# AUTOMATED TESTING
+def test_main_add_and_list_task(monkeypatch, capsys):
+    answer = iter(["1", "Learn Docker", "2", "5"])
+    monkeypatch.setattr("builtins.input", lambda _: next(answer))
+    main()
+    captured = capsys.readouterr()
+    assert "Learn Docker" in captured.out
+    assert "Goodbye" in captured.out
+
+
+
+def test_main_complete_and_delete_task(monkeypatch, capsys):
+    answers = iter(["1", "Learn Python", "1", "Learn Docker", "3", "1", "4", "2", "2", "5"])
+    monkeypatch.setattr("builtins.input", lambda _: next(answers))
+    main()
+    captured = capsys.readouterr()
+    assert "Learn Python completed" in captured.out
+    assert "Learn Docker" not in captured.out
+    assert "Goodbye" in captured.out
