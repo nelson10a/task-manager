@@ -352,4 +352,4 @@ def test_main_integration_for_update_after_restart(monkeypatch, capsys, tmp_path
     main(file_path)
     captured = capsys.readouterr()
     assert "Gearbox" in captured.out
-    assert "Gearbox" not in captured.out
+    assert "Gearbx" not in captured.out
