@@ -32,6 +32,23 @@ def get_parts_for_manufacturer(manufacturer_name):
 
 
 
+def add_manufacturer(name):
+    connection = connect_db()
+
+    with connection.cursor() as cursor:
+        cursor.execute("""INSERT INTO manufacturer (name)
+                       VALUES (%s) RETURNING manufacturer_id, name;""", (name,)) 
+        row = cursor.fetchone()
+        connection.commit() 
+       
+    connection.close()
+    return row
+        
+
+
+
+
+
 
 
 if __name__ == "__main__":
